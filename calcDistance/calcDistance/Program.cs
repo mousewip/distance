@@ -64,7 +64,7 @@ namespace calcDistance
             String strA = "Ha+Noi";
             String strB = "TPHCM";
             int kq = getDistance(strA, strB);
-            Console.WriteLine(kq/1000 +"Km");
+            Console.WriteLine(kq/1000.0 +"Km");
         }     
     }
 }
