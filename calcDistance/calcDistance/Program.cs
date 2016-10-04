@@ -16,14 +16,14 @@ namespace calcDistance
             int distance = 0;
             //string from = origin.Text;
             //string to = destination.Text;
-            string url = "http://maps.googleapis.com/maps/api/directions/json?origin=" + origin + "&destination=" + destination + "&sensor=false";
+            string url = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=" + origin + "&destinations=" + destination + "TPHCM&key=AIzaSyBRsV_JdR7AIF0BBzrb3Hi-TemGvC1ThNk";
             string requesturl = url;
             //string requesturl = @"http://maps.googleapis.com/maps/api/directions/json?origin=" + from + "&alternatives=false&units=imperial&destination=" + to + "&sensor=false";
             string content = fileGetContents(requesturl);
             JObject o = JObject.Parse(content);
             try
             {
-                distance = (int)o.SelectToken("routes[0].legs[0].distance.value");
+                distance = (int)o.SelectToken("rows[0].elements[0].distance.value");
                 return distance;
             }
             catch
@@ -61,14 +61,10 @@ namespace calcDistance
 
         public static void Main(string[] args)
         {
-            String strA = "Ha Noi";
+            String strA = "Ha+Noi";
             String strB = "TPHCM";
             int kq = getDistance(strA, strB);
-            Console.WriteLine(kq);
-        }
-
-       
+            Console.WriteLine(kq/1000 +"Km");
+        }     
     }
-
-
 }
