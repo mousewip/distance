@@ -1,9 +1,13 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace calcDistance
 {
@@ -18,6 +22,7 @@ namespace calcDistance
             string url = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=" + origin + "&destinations=" + destination + "&key=AIzaSyBRsV_JdR7AIF0BBzrb3Hi-TemGvC1ThNk";
           
             string requesturl = url;
+            Console.WriteLine(requesturl);
             //string requesturl = @"http://maps.googleapis.com/maps/api/directions/json?origin=" + from + "&alternatives=false&units=imperial&destination=" + to + "&sensor=false";
             string content = fileGetContents(requesturl);
             JObject o = JObject.Parse(content); //this is a bug, can't parse Parsing JSON Object using JObject.Parse
@@ -62,8 +67,44 @@ namespace calcDistance
         {
             String strA = "Ha+Noi";
             String strB = "TPHCM";
-            int kq = getDistance(strA, strB);
-            Console.WriteLine(kq / 1000.0 + "Km");
+            string kq = GetDistance(strA, strB);
+            Console.WriteLine(kq);
+        }
+
+
+
+
+
+
+
+
+        //==========================================================
+
+
+        public string GetDistance(string origin, string destination)
+        {
+            string url = @"http://maps.googleapis.com/maps/api/distancematrix/xml?origins=" + origin + "&destinations=" + destination + "&sensor=false";
+
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            WebResponse response = request.GetResponse();
+            Stream dataStream = response.GetResponseStream();
+            StreamReader sreader = new StreamReader(dataStream);
+            string responsereader = sreader.ReadToEnd();
+            response.Close();
+
+            DataSet ds = new DataSet();
+            ds.ReadXml(new XmlTextReader(new StringReader(responsereader)));
+            if (ds.Tables.Count > 0)
+            {
+                if (ds.Tables["element"].Rows[0]["status"].ToString() == "OK")
+                {
+                    //  lblDuration.Text = ds.Tables["duration"].Rows[0]["text"].ToString();
+                    return ds.Tables["distance"].Rows[0]["text"].ToString();
+                }
+              
+            }
+            return "unable to connect to server ";
+
         }
     }
 }

@@ -16,10 +16,10 @@ namespace calcDistance
             dd.calc();
 
             Console.WriteLine("Khoang cach tu ha noi den tphcm = D.Matrix");
-            /*this is a bug
+            /////*this is a bug
             DistanceMatrix dm = new DistanceMatrix();
             dm.calc();
-            */
+          
         }
        
     }
