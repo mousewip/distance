@@ -16,11 +16,11 @@ namespace calcDistance
             //string from = origin.Text;
             //string to = destination.Text;
             string url = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=" + origin + "&destinations=" + destination + "&key=AIzaSyBRsV_JdR7AIF0BBzrb3Hi-TemGvC1ThNk";
-  //          string url = "https://maps.googleapis.com/maps/api/distancematrix/json?origin=" + origin + "&destination=" + destination + "&sensor=false";
+          
             string requesturl = url;
             //string requesturl = @"http://maps.googleapis.com/maps/api/directions/json?origin=" + from + "&alternatives=false&units=imperial&destination=" + to + "&sensor=false";
             string content = fileGetContents(requesturl);
-            JObject o = JObject.Parse(content);
+            JObject o = JObject.Parse(content); //this is a bug, can't parse Parsing JSON Object using JObject.Parse
             try
             {
                 distance = (int)o.SelectToken("rows[0].elements[0].distance.value");
